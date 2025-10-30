@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>MM-Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estilo.css}" />
+</head>
+
+<body>
+    <div>
+        <div class="row m-3">
+            <img th:src="@{/img/log_malu.png}" style="width: 5%;" />
+            <h1 class="text-white">MALU MODAS</h1>
+        </div>
+        <div class="row">
+            <div class="modal-dialog modal-sm ">
+                <div class="modal-content">
+                    <div class="modal-header bg2">
+                        <h5 class="modal-title text-white">LOGIN</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/login}" method="post" th:object="${usuario}">
+                            <div class="row justify-content-center mb-3">
+                                <div class="col-3"><label class="form-label txt3" for="codigoUser">Código:</label></div>
+                                <div class="col-6"><input class="form-control" type="text" id="codigoUser" th:field="*{codigoUser}" required />
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mb-3">
+                                <div class="col-3"><label class="form-label txt3" for="senha">Senha:</label></div>
+                                <div class="col-6"><input class="form-control" type="password" id="senha" th:field="*{senha}"required />
+                                </div>
+                            </div>
+                            <div class="row justify-content-end mr-3 "><button type="submit"
+                                    class="btn bg3 text-white w-50" name="login">ENTRAR</button></div>
+							<div th:if="${msg !=null}" th:text="${msg}" style="color:red"></div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    <script>
+
+        function validarLog() {
+
+            var funcionario = formLogin.cod_func.value;
+            var senha_login = formLogin.senha_login.value;
+
+            if (email_login == "") {
+                alert('Preencha o campo com seu email!');
+                formLogin.email_login.focus();
+                return false;
+            }
+
+            if (senha_login == "" || senha_login.length < 6) {
+                alert('Preencha o campo com sua senha. \n(Mínimo de 6 e máximo de 8 dígitos.');
+                formLogin.email_login.focus();
+                return false;
+            }
+        }
+
+    </script>
+</body>
+
+</html>

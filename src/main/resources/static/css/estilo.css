@@ -1,0 +1,89 @@
+/* PALETA DE COR*/
+:root{
+--marrom-flash: #aa1b41;
+--coral-tree: #ab6670;
+--turkish-rose: #ac727c;
+--cranberry: #dc5c84;
+--puce: #d2959b;
+--clam-shell: #d4acac;
+--charm: #cf7b8c;
+--rose-fog: #e2acab;
+--sea-pink: #ea9eac;
+--cinderella: #fbcacb;
+--vermelho-combinante: #d94f5d; 
+--amarelo-combinante: #d4a74a;; 
+--verde-combinante: #6fa38f;   
+}
+
+body{
+    background-color: var(--marrom-flash);   
+}
+
+.bg1{
+    background-color:var(--marrom-flash);
+}
+.bg2{
+    background-color: var(--sea-pink);
+}
+.bg3{
+    background-color: var(--coral-tree);
+}
+.bgRed{
+    background-color: var(--vermelho-combinante);
+}
+.bgYellow{
+    background-color: var(--amarelo-combinante);
+}
+.bgGreen{
+    background-color: var(--verde-combinante);
+}
+.txt1{
+    background-color:var(--marrom-flash);
+}
+
+.txt2{
+    background-color: var(--sea-pink);
+}
+.txt3{
+    color: var(--coral-tree);
+}
+button:hover{
+    background: var(--sea-pink) ;
+}
+
+label{
+    color: var(--marrom-flash);    
+    padding: 5px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.table td, 
+.table th {
+    white-space: nowrap;       
+    overflow: hidden;          
+    text-overflow: ellipsis;  
+    max-width: 150px;          
+    height: 40px;             
+    vertical-align: middle;   
+}
+
+.table td:hover, 
+.table th:hover {
+    overflow-x: auto;         
+    text-overflow: unset;     
+    white-space: nowrap;       
+}
+/* Aba não ativa */
+.nav-tabs .nav-link {
+     background-color: var(--cinderella); 
+    color: var(--marrom-flash);               
+    border-color: var(--cranberry);     
+}
+
+/* Aba ativa */
+.nav-tabs .nav-link.active {   
+    background-color: var(--cranberry); 
+    color:var(--cinderella);              
+    border-color:var(--cranberry);      
+}

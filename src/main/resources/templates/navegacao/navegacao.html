@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>MALU MODAS</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/estilo.css}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+</head>
+
+<body>
+    <div class="row ms-3 me-3 mt-3 mb-0">
+        <div class="col-1 d-flex justify-content-end p-0">
+            <img th:src="@{/img/log_malu.png}" style="width: 50%;" />
+        </div>
+        <div class="col-8">
+            <h1 class="text-white">MALU MODAS</h1>
+        </div>
+	    <div class="col-3 d-flex justify-content-end align-items-center">
+	        <label  style="border-radius:0px" class="rounded-start" th:if="${usuarioLogado != null}" th:text="${usuarioLogado.nome}">Visitante</label>
+			<label style="border-radius:0px" class="rounded-end" th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></label>
+	    </div>
+		
+    </div>
+    <div class="m-0">
+        <!--Barra de navegação -->
+        <div class="row ms-3 me-3">
+            <div class="col-12 d-flex justify-content-end">
+                <ul class="nav nav-tabs" id="meuTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+						<a th:href="@{/estoque}" class="nav-link bg2" th:classappend="${tabAtiva} == 'estoque' ? ' active' : ''"
+						      id="estoque-tab" role="tab" aria-controls="estoque" aria-selected="true">
+						       Estoque
+						   </a>
+                    </li>					
+                    <li class="nav-item" role="presentation">
+						<a th:href="@{/estoque/filtro}" 
+						       class="nav-link bg2" th:classappend="${tabAtiva} == 'filtro' ? ' show active' : ''"
+						       id="relatorio-tab" role="tab"  aria-controls="relatorio" aria-selected="false">
+						        Filtros
+						    </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--linha com tabelas e formulário-->
+    <div class="row ms-3 bg2 rounded" style="width: 98%; height: 475px;">
+        <!--div configura as tabs-->
+        <div class=" tab-content border-top-0 col-12 p-3" id="meuTabConteudo">
+            <!--divs da tab estoque-->
+            <div class="tab-pane fade" th:classappend="${tabAtiva} == 'estoque' ? ' show active' : ''" id="estoque" role="tabpanel">
+                <div class="row">
+                    <!--coluna da tabela de listagem-->
+                    <div class="col-8 bg-white  ms-5 rounded" style="min-height: 435px;">
+                        <!--tabela de listagem-->
+                        <div class="row table-responsive m-1" style="max-height: 430px; overflow-y: auto;">
+                            <table class="table table-striped">
+                                <thead class="sticky-top bg3 text-white">
+                                    <tr style="font-size:12px">
+                                        <th scope="col">COD</th>
+                                        <th scope="col">PRODUTO</th>
+                                        <th scope="col">DESCRIÇÃO</th>
+                                        <th scope="col">QTD</th>
+                                        <th scope="col">TAM</th>
+                                        <th scope="col">VALOR COMPRA</th>
+                                        <th scope="col">VALOR VENDA</th>
+                                        <th scope="col">FORNECEDOR</th>
+                                        <th scope="col">DESC MAX</th>
+										
+										
+										
+                                </thead>
+                                <tbody>
+                                    <tr th:each="item: ${produtos}" class="linha-produto">
+										<td style="display: none;" th:text="${item.id}"></td>
+                                        <td th:text="${item.cod_produto}"></td>
+                                        <td th:text="${item.nome}"></td>
+                                        <td th:text="${item.descricao}"></td>
+                                        <td th:text="${item.qtd}"></td>
+                                        <td th:text="${item.tam}"></td>
+                                        <td th:text="${item.compra}"></td>
+                                        <td th:text="${item.venda}"></td>
+                                        <td th:text="${item.fornecedor}"></td>
+                                        <td th:text="${item.max_desc}"></td>									
+										
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--coluna do formulário-->
+                    <div class="col-3 bg-white  ms-4 rounded" style="min-height: 435px;">
+                        <form th:action="@{/estoque/salvar}" method="post" th:object="${produto}" class="formulario" id="formularioEstoque">
+							<input type="hidden" th:field="*{id}"/>
+							<!--cod-->
+                            <div class="row mt-3">
+                                <div class="col-5">
+                                    <label class="bg2 w-100 te" for="cod_produto">Código:</label>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <input type="text" class="form-control form-control-sm w-50" id="cod_produto"
+                                        th:field="*{cod_produto}" placeholder="Cód Produto" />
+                                </div>
+                            </div>
+                            <!--produto-->
+                            <div class="row mt-2">
+                                <div class="col-5">
+                                    <label class="bg2 w-100 " for="nome">Produto:</label>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <input type="text" class="form-control form-control-sm me-1" style="max-width:95%" id="nome"
+                                        th:field="*{nome}" placeholder="Nome do Produto" />
+                                </div>
+                            </div>
+                            <!--descrição-->
+                            <div class="row mt-2">
+                                <div class="col-5">
+                                    <label class="bg2 w-100" for="descricao">Descrição:</label>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <textarea name="descricao" rows="2" cols="25" class="form-control" style="max-width:95%"
+                                       th:field="*{descricao}" wrap="soft"></textarea>
+                                </div>
+                            </div>
+                            <!--quantidade /tamanho-->
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <label class="bg2" for="qtd">Quantidade:</label>
+                                </div>
+                                <div class="col-2 p-0">
+                                    <input type="text" class="form-control form-control-sm w-75" id="qtd"
+                                        th:field="*{qtd}" placeholder="Qtd" />
+                                </div>
+                                <div class="col-4">
+                                    <label class="bg2" for="qtd">Tamanho:</label>
+                                </div>
+                                <div class="col-2 p-0">                                    
+										<select id="tam" th:field="*{tam}" class="form-control form-control-sm" 
+											style="width: 80%;">
+											<option value="">Selecione</option>
+											<option th:each="t : ${tamanhos}" th:value="${t.label}" th:text="${t.label}"></option>
+										</select>
+                                </div>
+                            </div>
+                            <!--valor compra-->
+                            <div class="row mt-2">
+                                <div class="col-5">
+                                    <label class="bg2 w-100" for="val_compra">V. Compra:</label>
+                                </div>
+                                <div class="col-6 p-0 me-1">
+                                    <input type="text" class="form-control form-control-sm" id="compra" style="max-width:95%"
+                                        th:field="*{compra}" placeholder="Valor de compra" />
+                                </div>
+                            </div>
+                            <!--valor venda-->
+                            <div class="row mt-2">
+                                <div class="col-5">
+                                    <label class="bg2 w-100" for="val_venda">V. Venda:</label>
+                                </div>
+                                <div class="col-6 p-0 me-1">
+                                    <input type="text" class="form-control form-control-sm" id="venda" style="max-width:95%"
+                                        th:field="*{venda}" placeholder="Valor de venda" />
+                                </div>
+                            </div>
+                            <!--fornecedor-->
+                            <div class="row mt-2">
+                                <div class="col-5">
+                                    <label class="bg2 w-100" for="fornecedor">Fornecedor:</label>
+                                </div>
+                                <div class="col-6 p-0 me-1">
+                                    <input type="text" class="form-control form-control-sm" id="fornecedor" style="max-width:95%"
+                                        th:field="*{fornecedor}" placeholder="fornecedor" />
+                                </div>
+                            </div>
+                            <!--desconto máximo-->
+                            <div class="row mt-2">
+                                <div class="col-5">
+                                    <label class="bg2 w-100" for="desconto">Desconto:</label>
+                                </div>
+                                <div class="col-6 p-0 me-1">
+                                    <input type="text" class="form-control form-control-sm" id="max_desc" style="max-width:95%"
+                                        th:field="*{max_desc}" placeholder="desconto máximo" />
+                                </div>
+                            </div>
+                            <!--botoes-->
+                            <div class="row mt-2 d-flex justify-content-center">
+                                <div class="col-2 bgRed rounded d-flex justify-content-center align-items-center me-3">
+                                    <button type="button" name="deletar" class="btn p-0 text-white"
+                                        style="background: none; border: none;" onclick="deletarEstoque()">
+                                        <i class="bi bi-trash" style="font-size: 32px;"></i>
+                                    </button>
+                                </div>
+                                <div
+                                    class="col-2 bgYellow rounded d-flex justify-content-center align-items-center me-3">
+                                    <button type="submit" name="editar" class="btn p-0 text-white"
+                                        style="background: none; border: none;" onclick="limpar()"><i class="bi bi-eraser"
+                                            style="font-size: 32px;"></i></button>
+                                </div>
+                                <div class="col-2 bgGreen rounded d-flex justify-content-center align-items-center">
+                                    <button type="submit" name="salvar" class="btn p-0 text-white"
+                                        style="background: none; border: none;"><i class="bi bi-check-square"
+                                            style="font-size: 32px;"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--divs da tab relatório-->
+            <div class="tab-pane fade" th:classappend="${tabAtiva} == 'filtro' ? ' show active' : ''" id="relatorio" role="tabpanel">
+                <div class="row">
+                    <div class="col-9 bg-white  ms-5 rounded" style="min-height: 435px;">
+                        <!--tabela visualizar resultado filtro-->
+                        <div class="row table-responsive m-1" style="max-height: 430px; overflow-y: auto;">
+                            <table class="table table-striped">
+                                <thead class="sticky-top bg3 text-white">
+                                    <tr>
+                                        <th scope="col">COD</th>
+                                        <th scope="col">PRODUTO</th>
+                                        <th scope="col">DESCRIÇÃO</th>
+                                        <th scope="col">QTD</th>
+                                        <th scope="col">TAM</th>
+                                        <th scope="col">VALOR COMPRA</th>
+                                        <th scope="col">VALOR VENDA</th>
+                                        <th scope="col">FORNECEDOR</th>
+                                        <th scope="col">DESC MAX</th>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${produtos !=null or !#lists.isEmpty(produtos)}" th:each="item: ${produtos}" class="linha-produto">
+										<td style="display: none;" th:text="${item.id}"></td>
+										<td th:text="${item.cod_produto}"></td>
+										<td th:text="${item.nome}"></td>
+										<td th:text="${item.descricao}"></td>
+										<td th:text="${item.qtd}"></td>
+										<td th:text="${item.tam}"></td>
+										<td th:text="${item.compra}"></td>
+										<td th:text="${item.venda}"></td>
+										<td th:text="${item.fornecedor}"></td>
+										<td th:text="${item.max_desc}"></td>	
+                                    </tr>
+									<tr th:if="${produtos == null or #lists.isEmpty(produtos)}">
+									           <td colspan="5" style="text-align:center;">
+									               Selecione uma coluna e insira um valor para filtrar os produtos.
+									           </td>
+									       </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-2 bg-white  ms-4 rounded" style="min-height: 435px;">
+                        <form th:action="@{/estoque/filtro}" method="post">
+                            <!--título-->
+                            <div class="row mt-5 ms-3 me-3 d-flex justify-content-center">
+                                <label class="bg2 text-center" for="cod_prod">FILTROS</label>
+                            </div>
+                            <!--select com os campos de filtro-->
+                            <div class="row mt-5 d-flex justify-content-center">
+                                <label class="bg3 text-white w-75" for="descricao">Escolha um filtro:</label>
+                            </div>
+                            <div class="row mt-3 justify-content-center">
+                                <select class="form-control form-control-sm" style="width: 80%;" name="coluna"
+                                    id="filtro">
+                                    <option value="0">Selecione</option>
+                                    <option value="1">Código</option>
+                                    <option value="2">Produto</option>
+                                    <option value="3">Quantidade</option>
+                                    <option value="4">Tamanho</option>
+                                    <option value="5">Valor Compra</option>
+                                    <option value="6">Valor Venda</option>
+                                    <option value="7">Fornecedor</option>
+                                    <option value="8">Desconto Máximo</option>
+                                </select>
+                            </div>
+                            <!--input para digitar elemento de pesquisa para filtro-->
+                            <div class="row mt-3 justify-content-center">
+                                <input type="text" class="form-control form-control-sm" id="valor" name="valor"
+                                    placeholder="Valor de pesquisa" style="display: none; width: 80%;" />
+								<select id="tamanho" name="valor" class="form-control form-control-sm" 
+								style="width: 80%; display: none">
+									<option value="">Selecione</option>
+									<option th:each="t : ${tamanhos}" th:value="${t.label}" th:text="${t.label}"></option>
+								</select>
+                            </div>							
+                            <!--botoes-->
+                            <div class="row bgGreen d-flex justify-content-center rounded m-5">
+								
+	                                <button type="submit" name="filtrar" class="btn p-0 text-white"
+	                                    style="background: none; border: none;"> FILTRAR
+	                                </button>
+								
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+   
+    <script>
+		
+		function limpar() {
+		    const campos = ["id", "cod_produto", "nome", "descricao", "qtd", "tam", "compra", "venda", "fornecedor", "max_desc"];
+		    campos.forEach(campo => document.getElementById(campo).value = "");
+		}	
+		
+		function deletarEstoque() {
+		    const id = document.getElementById("id").value;
+		    if (!id || id === "0") {
+		        alert("Selecione um produto antes de excluir.");
+		        return;
+		    }
+
+		    if (confirm("Deseja realmente excluir este produto?")) {
+		        const url = "/estoque/deletar?id=" + id;
+		        console.log("Redirecionando para:", url);
+		        window.location.href = url;
+		    }
+		}
+
+		
+		
+		document.addEventListener("DOMContentLoaded", function () {
+		       const linhas = document.querySelectorAll(".linha-produto"); // Classe aplicada no <tr>
+
+		       linhas.forEach(linha => {
+		           linha.addEventListener("click", function () {
+		               // Captura os valores das células (ajuste os índices conforme sua tabela
+					   const id = this.cells[0].innerText.trim();
+		               const cod = this.cells[1].innerText.trim();
+		               const nome = this.cells[2].innerText.trim();
+		               const descricao = this.cells[3].innerText.trim();
+		               const qtd = this.cells[4].innerText.trim();
+		               const tam = this.cells[5].innerText.trim();
+		               const compra = this.cells[6].innerText.trim();
+		               const venda = this.cells[7].innerText.trim();
+		               const fornecedor = this.cells[8].innerText.trim();
+		               const max_desc = this.cells[9].innerText.trim();
+
+		               // Preenche os campos do formulário
+					   document.getElementById("id").value = id;
+		               document.getElementById("cod_produto").value = cod;
+		               document.getElementById("nome").value = nome;
+		               document.getElementById("descricao").value = descricao;
+		               document.getElementById("qtd").value = qtd;
+		               document.getElementById("tam").value = tam;
+		               document.getElementById("compra").value = compra;
+		               document.getElementById("venda").value = venda;
+		               document.getElementById("fornecedor").value = fornecedor;
+		               document.getElementById("max_desc").value = max_desc;
+		           });
+		       });
+		   });
+		
+        const filtro = document.getElementById('filtro');
+        const valor = document.getElementById('valor');
+		const tamanho = document.getElementById('tamanho');
+
+        filtro.addEventListener('change', function () {
+            switch (this.value) {
+                case '0':
+                    valor.style.display = "none";
+					tamanho.style.display = "none";
+                    break;
+                case '1':
+                    valor.placeholder = "Digite o Código";
+                    valor.style.display = "block";
+					tamanho.style.display = "none";
+                    break;
+                case '2':
+                    valor.placeholder = "Digite o Nome";
+                    valor.style.display = "block";
+					tamanho.style.display = "none";
+                    break;
+                case '3':
+                    valor.placeholder = "Digite a Quantidade";
+                    valor.style.display = "block";
+					tamanho.style.display = "none";
+                    break;      
+				case '4':
+					valor.style.display = "none"
+					tamanho.style.display = "block";	
+					break;          
+                case '5':
+                    valor.placeholder = "Digite o Valor de Compra";
+                    valor.style.display = "block";
+					tamanho.style.display = "none";
+                    break;
+                case '6':
+                    valor.placeholder = "Digite o Valor de Venda";
+                    valor.style.display = "block";
+					tamanho.style.display = "none";
+                    break;
+                case '7':
+                    valor.placeholder = "Digite o Fornecedor";
+                    valor.style.display = "block";
+					tamanho.style.display = "none";
+                    break;
+                case '8':
+                    valor.placeholder = "Digite o Desconto Máximo";
+                    valor.style.display = "block";
+					tamanho.style.display = "none";
+                    break;
+                default:
+                    valor.placeholder = "Valor de Pesquisa";
+                    valor.style.display = "none";
+					tamanho.style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>
